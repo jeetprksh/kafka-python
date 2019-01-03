@@ -21,6 +21,10 @@ class TestKafkaConsumer:
         with pytest.raises(KafkaConfigurationError):
             KafkaConsumer(bootstrap_servers='localhost:9092', fetch_max_wait_ms=41000, request_timeout_ms=40000)
 
+    def test_connections_max_idle_ms_smaller_than_request_timeout_raises(self):
+        with pytest.raises(KafkaConfigurationError):
+            KafkaConsumer(bootstrap_servers='localhost:9092', connections_max_idle_ms=39000, request_timeout_ms=40000)
+
     def test_subscription_copy(self):
         consumer = KafkaConsumer('foo', api_version=(0, 10))
         sub = consumer.subscription()
